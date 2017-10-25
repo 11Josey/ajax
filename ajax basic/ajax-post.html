@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>get方法</title>
+	<script type="text/javascript">
+		window.onload = function () {
+			var btn = document.querySelector('#btn');
+			var info = document.querySelector('#info');
+			btn.onclick = function () {
+				var user = document.querySelector('#username').value;
+				var ps = document.querySelector('#psw').value;
+				var xhr = null;
+				if(window.XMLHttpRequest) {
+					xhr = new XMLHttpRequest();
+				}else{
+					xhr = new ActiveXObject("Microsoft");//ie6以及以下
+				}
+				//open()方法接收三个参数,一个是请求方式,第二个是url地址,第三个是异步还是同步,默认是异步true
+				var param = 'user='+user+'&ps='+ps;
+				xhr.open('post','./check.php?',true);
+				xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+				xhr.send(param);//post请求send()里面传参数,在发送请求前一定要设置请求头
+				/*readyState的值代表的含义
+				 *0 xhr对象初始化 
+				 *1 执行发送动作 2 服务器端数据已经完全返回 3 数据正在解析
+				 * 4 数据解析完成,可以使用了
+				 */
+
+				xhr.onreadystatechange=function () {
+					if(xhr.readyState==4) {
+						if(xhr.status==200) {
+							alert(xhr.responseText);
+						}
+					}
+				}
+			};
+		};
+	</script>
+</head>
+<body>
+	<form>
+		用户名<input type="text" name="username" id="username"> <span id="info"></span><br>
+		密码<input type="password" name="psw" id="psw"> <br>
+		<input type="button" name="" value="登录" id="btn">
+	</form>
+</body>
+</html>
